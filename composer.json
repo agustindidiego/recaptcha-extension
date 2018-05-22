@@ -1,0 +1,12 @@
+{
+    "name": "rage/recaptcha-extension",
+    "type": "streams-addon",
+    "require": {
+        "anhskohbo/no-captcha": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rage\\RecaptchaExtension\\": "src/"
+        }
+    }
+}
