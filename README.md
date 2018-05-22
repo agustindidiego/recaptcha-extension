@@ -1,7 +1,7 @@
 # recaptcha-extension
 PyroCMS - Recaptcha Field Type
 
-#Usage
+# Usage
 Just include this into your FormBuilder
 ```php
 protected $options = [
