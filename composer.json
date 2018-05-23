@@ -1,6 +1,25 @@
 {
     "name": "rage/recaptcha-extension",
     "type": "streams-addon",
+    "version": "1.0.2",
+    "description": "Extension that appends recaptcha validation to forms",
+    "keywords": [
+        "recaptcha",
+        "captcha",
+        "pyrocms",
+        "extension"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rage Ideas",
+            "email": "agustindidiego@gmail.com",
+            "role": "Owner"
+        }
+    ],
+    "support": {
+        "email": "agustindidiego@gmail.com"
+    },
     "require": {
         "anhskohbo/no-captcha": "^2.3"
     },

@@ -55,7 +55,7 @@ class RecaptchaExtensionServiceProvider extends AddonServiceProvider
     public function register(FormBuilder $formBuilder)
     {
 
-	    $formBuilder->listen('built', function($builder, FieldFactory $factory){
+	    $formBuilder->listen('ready', function($builder, FieldFactory $factory){
 		    /** @var $builder FormBuilder */
 
 		    if($builder->getOption('captcha'))
@@ -67,11 +67,15 @@ class RecaptchaExtensionServiceProvider extends AddonServiceProvider
 					    'type'     => 'anomaly.field_type.text',
 					    'label'    => 'Captcha',
 					    'inputView'=> 'rage.extension.recaptcha::input',
-				        'disabled' => true,
+				        'disabled' => false,
+					    'readonly' => true,
 					    'required' => true,
 					    'rules'     => [
 					    	'captcha',
 					    ],
+				        'messages' => [
+				            'captcha' => 'rage.extension.recaptcha::validation.captcha'
+                        ],
 				        'presenter' => RecaptchaPresenter::class,
 				        'config'    => [
 				        	'disable_label'    => true,
