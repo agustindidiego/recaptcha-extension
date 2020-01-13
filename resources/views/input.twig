@@ -7,4 +7,5 @@
         {{ field_type.disabled ? 'disabled' }}
         {{ field_type.readonly ? 'readonly' }}>
 
-{{ field_type.captcha|raw }}
+{{ field_type.captcha.renderJs()|raw }}
+{{ field_type|raw }}

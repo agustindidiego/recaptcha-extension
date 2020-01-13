@@ -1,14 +1,13 @@
 <?php namespace Rage\RecaptchaExtension;
 
-use Anhskohbo\NoCaptcha\NoCaptcha;
 use Anomaly\Streams\Platform\Addon\AddonServiceProvider;
-use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
 use Anomaly\Streams\Platform\Ui\Form\Component\Field\FieldFactory;
-use Anomaly\Streams\Platform\Ui\Form\Form;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 use Rage\RecaptchaExtension\Form\RecaptchaPresenter;
 use Rage\RecaptchaExtension\Form\RecaptchaValidator;
-use Rage\ReviewsModule\Comment\Form\CommentFormBuilder;
+use Anomaly\Streams\Platform\Ui\Form\Event\FormWasBuilt;
+use Rage\RecaptchaExtension\Form\Listener\AppendRecaptcha;
+use Anhskohbo\NoCaptcha\NoCaptchaServiceProvider;
 
 class RecaptchaExtensionServiceProvider extends AddonServiceProvider
 {
@@ -22,23 +21,17 @@ class RecaptchaExtensionServiceProvider extends AddonServiceProvider
     protected $middleware = [];
 
     protected $listeners = [
-	    'Anomaly\Streams\Platform\Ui\Form\Event\FormWasBuilt' => [
-		    'Rage\RecaptchaExtension\Form\Listener\AppendRecaptcha',
+	    FormWasBuilt::class => [
+            AppendRecaptcha::class,
 	    ],
     ];
 
-    protected $aliases = [
-//	    'Anomaly\Streams\Platform\Ui\Form\FormBuilder' => 'form'
-    ];
+    protected $aliases = [];
 
-    protected $bindings = [
-	    'Anomaly\Streams\Platform\Ui\Form\FormBuilder'                              => 'Anomaly\Streams\Platform\Ui\Form\FormBuilder',
-	    'Anomaly\Streams\Platform\Ui\Form\Form'                              => 'Anomaly\Streams\Platform\Ui\Form\Form',
-//	    'Anhskohbo\NoCaptcha\NoCaptcha'                              => 'Anhskohbo\NoCaptcha\NoCaptcha',
-    ];
+    protected $bindings = [];
 
     protected $providers = [
-	    'Anhskohbo\NoCaptcha\NoCaptchaServiceProvider',
+        NoCaptchaServiceProvider::class,
     ];
 
     protected $singletons = [];
@@ -60,38 +53,36 @@ class RecaptchaExtensionServiceProvider extends AddonServiceProvider
 
 		    if($builder->getOption('captcha'))
 		    {
-
-			    $builder->addFormField($factory->make(
-				    [
-					    'field'    => 'captcha',
-					    'type'     => 'anomaly.field_type.text',
-					    'label'    => 'Captcha',
-					    'inputView'=> 'rage.extension.recaptcha::input',
-				        'disabled' => false,
-					    'readonly' => true,
-					    'required' => true,
-					    'rules'     => [
-					    	'captcha',
-					    ],
-				        'messages' => [
-				            'captcha' => 'rage.extension.recaptcha::validation.captcha'
+                $builder->addField('captcha', [
+                    'type'     => 'anomaly.field_type.text',
+                    'label'    => 'Captcha',
+                    'inputView'=> 'rage.extension.recaptcha::input',
+                    'disabled' => false,
+                    'readonly' => true,
+                    'required' => true,
+                    'rules'     => [
+                        'captcha',
+                    ],
+                    'messages' => [
+                        'captcha' => 'rage.extension.recaptcha::validation.captcha'
+                    ],
+                    'validators' => [
+                        'captcha' => [
+                            'handler' => RecaptchaValidator::class,
+                            'message' => 'The date/time format is invalid.',
                         ],
-				        'presenter' => RecaptchaPresenter::class,
-				        'config'    => [
-				        	'disable_label'    => true,
-				            'type'              => 'hidden'
-				        ],
-				        'value' => 1
-				    ]
-			    ));
+                    ],
+                    'presenter' => RecaptchaPresenter::class,
+                    'config'    => [
+                        'disable_label'    => true,
+                        'type'              => 'hidden'
+                    ],
+                    'value' => 1
+                ]);
 		    }
 
 	    });
 
-    }
-
-    public function map()
-    {
     }
 
 }

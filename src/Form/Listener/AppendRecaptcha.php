@@ -1,14 +1,4 @@
-<?php
-/**
- *  [DESCRIPTION]
- *
- * @author      agustin
- * @category    Interactiv4
- * @package     Interactiv4_[MODULE]
- * @copyright   Copyright (c) 2017 Interactiv4, Inc. (http://www.interactiv4.com)
- */
-
-namespace Rage\RecaptchaExtension\Form\Listener;
+<?php namespace Rage\RecaptchaExtension\Form\Listener;
 
 
 use Anomaly\Streams\Platform\Ui\Form\Event\FormWasBuilt;
@@ -34,7 +24,6 @@ class AppendRecaptcha
 	 */
 	public function handle(FormWasBuilt $event)
 	{
-
 		$event->getBuilder();
 	}
 
